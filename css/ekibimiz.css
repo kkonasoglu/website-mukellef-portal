@@ -1,0 +1,144 @@
+/* =========================================
+   HAKKIMIZDA & EKİP SAYFASI ÖZEL STİLLERİ
+========================================= */
+
+/* --- Page Intro (Ön Konuşma) --- */
+.page-intro {
+    padding: 180px 0 100px; /* Header'ın altında kalmaması için üstten boşluk */
+    background: var(--gradient-hero);
+    transition: background 0.4s ease;
+    border-bottom: 1px solid var(--border-color);
+}
+.page-intro .text-center { text-align: center; }
+.page-intro h1 { font-size: 3rem; margin-bottom: 25px; }
+.intro-text {
+    max-width: 800px;
+    margin: 0 auto;
+    font-size: 1.15rem;
+    color: var(--text-gray);
+    line-height: 1.8;
+}
+
+/* --- Team Section (Ekibimiz) --- */
+.team-section { padding: 100px 0; }
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+}
+
+.logo a {
+    text-decoration: none;
+    color: black;
+}
+.team-card {
+    background: var(--bg-white);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+    text-align: center;
+}
+.team-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--accent-color);
+}
+
+/* Kişi Fotoğrafı Alanı */
+.team-img-box {
+    width: 100%;
+    height: 280px; /* Fotoğraf boyutu için standart yükseklik */
+    background-color: var(--bg-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+/* Sen buraya <img> eklediğinde resmi kutuya sığdırması için */
+.team-img-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+.team-card:hover .team-img-box img {
+    transform: scale(1.05); /* Üzerine gelince resim hafif yakınlaşır */
+}
+.placeholder-icon {
+    font-size: 4rem;
+    color: var(--text-gray);
+    opacity: 0.3;
+}
+
+.team-info { padding: 25px 20px; }
+.team-info h4 {
+    font-size: 1.25rem;
+    color: var(--text-dark);
+    margin-bottom: 5px;
+}
+.team-info p {
+    color: var(--accent-color);
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+/* --- Partners Section (Kullanılan Şirketler) --- */
+.partners-section {
+    padding: 100px 0;
+    background-color: var(--bg-white);
+}
+.partners-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px;
+    align-items: center;
+}
+
+/* Şirket Logo Kutuları */
+.partner-card {
+    height: 100px;
+    background-color: var(--bg-light);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+    color: var(--text-gray);
+    font-weight: 600;
+    overflow: hidden;
+    padding: 15px;
+}
+.partner-card:hover {
+    background-color: var(--bg-white);
+    box-shadow: var(--shadow-md);
+    border-color: var(--accent-color);
+}
+/* Logolar eklendiğinde filtre uygulaması (İsteğe bağlı siyah-beyazdan renkliye geçiş) */
+.partner-card img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    filter: grayscale(100%);
+    opacity: 0.7;
+    transition: var(--transition);
+}
+.partner-card:hover img {
+    filter: grayscale(0%);
+    opacity: 1;
+}
+
+/* --- HAKKIMIZDA SAYFASI RESPONSIVE AYARLARI --- */
+@media (max-width: 992px) {
+    .team-grid { grid-template-columns: repeat(2, 1fr); }
+    .page-intro h1 { font-size: 2.5rem; }
+}
+
+@media (max-width: 768px) {
+    .team-grid { grid-template-columns: 1fr; gap: 40px; }
+    .partners-grid { grid-template-columns: repeat(2, 1fr); }
+    .page-intro { padding: 140px 0 80px; }
+    .page-intro h1 { font-size: 2.2rem; }
+}
