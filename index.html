@@ -11,12 +11,71 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- CSS -->
     <link rel="stylesheet" href="css/main.css">
-</head>
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/main.css">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
+    <!-- Yuvarlak Okuma İlerleme Barı Stilleri -->
+    <style>
+        #progress-scroll-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background-color: transparent; /* Arka plan tamamen şeffaf kalmaya devam ediyor */
+            border-radius: 50%;
+            box-shadow: none;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #progress-scroll-btn.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .arrow-icon {
+            font-size: 20px;
+            color: rgba(51, 51, 51, 0.75); /* Ok işareti daha belirgin ve canlı yapıldı */
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+
+        #progress-scroll-btn:hover .arrow-icon {
+            transform: translateY(-3px);
+            color: rgba(88, 66, 227, 1); /* Üzerine gelince tam mor olur */
+        }
+
+        .progress-circle {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .progress-circle path {
+            fill: none;
+            stroke: rgba(88, 66, 227, 0.7); /* Mor dairenin ilk hali %70 canlılığa yükseltildi, artık sönük durmaz */
+            stroke-width: 4.5; /* Çizgi kalınlığı biraz daha belirgin olması için 4.5 yapıldı */
+            box-sizing: border-box;
+            transition: stroke-dashoffset 0.1s linear, stroke 0.3s ease;
+        }
+
+        /* Butonun üzerine gelindiğinde (hover) tam netleşme efekti */
+        #progress-scroll-btn:hover {
+            /* Üzerine gelindiğinde butona çok hafif, şık bir beyaz parıltı hissi ekledik */
+            background-color: rgba(255, 255, 255, 0.1); 
+        }
+
+        #progress-scroll-btn:hover .progress-circle path {
+            stroke: rgba(88, 66, 227, 1); /* Üzerine gelindiğinde mor çizgi tamamen parlar */
+        }
+    </style>
 </head>
 
 <body>
@@ -117,7 +176,6 @@
 
             <!-- Sağ Taraf: Uygulama/Panel Görseli -->
             <div class="intro-visual animate-on-scroll delay-1">
-                <!-- Kendi panelinin ekran görüntüsünü (örn: image_83d6e1.jpg) buraya koyabilirsin -->
                 <div class="mockup-box float-anim">
                     <img src="images/mukellef_portal-1.jpeg" alt="Mükellef Portal Arayüzü" class="panel-img">
                 </div>
@@ -278,7 +336,7 @@
         <div class="container info-container">
             <div class="info-content animate-on-scroll">
                 <h2>Mükellefleriniz arasındaki <br><span>evrak karmaşasına son</span></h2>
-                <p class="subtitle">Mükellef Portal, serbest muhasebeci mali müşavirlerin (SMMM) iş yükünü hafifletmek
+                <p class="subtitle">Mükellef Portal, serbest muhasebeci mali uzmanların (SMMM) iş yükünü hafifletmek
                     ve resmi işlemleri hızlandırmak için tasarlandı.</p>
 
                 <ul class="features-list">
@@ -430,7 +488,6 @@
                 <div class="partner-card">
                     <a href="https://www.jetkolay.com" target="_blank" title="Jetkolay'a Git"
                         style="display: flex; justify-content: center; align-items: center; width: 100%; height: 100%;">
-                        <!-- Logonun biraz daha büyük görünmesi için transform: scale ekledik -->
                         <img src="images/logolar/jet-kolay-logo.png" alt="Jetkolay"
                             style="max-width: 90%; max-height: 80px; object-fit: contain; transform: scale(1.2);">
                     </a>
@@ -551,7 +608,6 @@
             <div class="footer-col">
                 <h4>İletişim</h4>
                 <ul class="contact-info">
-                    <!-- Tıklanabilir Harita Linki -->
                     <li>
                         <a href="https://www.google.com/maps?ll=41.297399,36.332208&z=17&t=m&hl=tr&gl=TR&mapclient=embed&cid=4014054536983940385"
                             target="_blank" rel="noopener noreferrer"
@@ -568,7 +624,50 @@
         </div>
     </footer>
 
+    <!-- HTML Yapısı (Daire ve Ok) -->
+    <div id="progress-scroll-btn">
+        <svg class="progress-circle" width="100%" height="100%" viewBox="-1 -1 102 102">
+            <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
+        </svg>
+        <span class="arrow-icon">↑</span>
+    </div>
+
     <script src="js/script.js"></script>
+
+    <!-- Yuvarlak Okuma İlerleme Barı Mantığı -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const scrollBtn = document.getElementById("progress-scroll-btn");
+            const progressPath = document.querySelector(".progress-circle path");
+            const pathLength = progressPath.getTotalLength();
+
+            progressPath.style.strokeDasharray = `${pathLength} ${pathLength}`;
+            progressPath.style.strokeDashoffset = pathLength;
+
+            const updateProgress = () => {
+                const scroll = window.scrollY || document.documentElement.scrollTop;
+                const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                
+                const progress = pathLength - (scroll * pathLength) / height;
+                progressPath.style.strokeDashoffset = progress;
+
+                if (scroll > 200) {
+                    scrollBtn.classList.add("active");
+                } else {
+                    scrollBtn.classList.remove("active");
+                }
+            };
+
+            scrollBtn.addEventListener("click", () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: "smooth"
+                });
+            });
+
+            window.addEventListener("scroll", updateProgress);
+        });
+    </script>
 </body>
 
 </html>
