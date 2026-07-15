@@ -781,14 +781,14 @@
 
             <h1 class="contact-title">Bize Ulaşın</h1>
 
+            <!-- ÜST KISIM: Sol (İletişim) ve Sağ (Form) Kutuları -->
             <div class="contact-cards">
-
+                
+                <!-- SOL KUTU: İletişim Bilgileri -->
                 <div class="contact-phone-card">
                     <h3>İletişim Bilgileri</h3>
                     
-                    <!-- 1. Telefon -->
                     <div class="contact-item">
-                        <!-- İkon Linke Çevrildi -->
                         <a href="tel:+905522855561" class="contact-icon">
                             <i class="fa-solid fa-phone"></i>
                         </a>
@@ -798,9 +798,7 @@
                         </div>
                     </div>
 
-                    <!-- 2. Telefon -->
                     <div class="contact-item">
-                        <!-- İkon Linke Çevrildi -->
                         <a href="tel:+905528435506" class="contact-icon">
                             <i class="fa-solid fa-phone"></i>
                         </a>
@@ -810,9 +808,7 @@
                         </div>
                     </div>
 
-                    <!-- WhatsApp (Hazır Mesajlı) -->
                     <div class="contact-item">
-                        <!-- İkon Linke Çevrildi -->
                         <a href="https://wa.me/905522855561?text=Merhaba,%20Mükellef%20Portal%20hakkında%20bilgi%20almak%20istiyorum." target="_blank" class="contact-icon whatsapp-icon">
                             <i class="fa-brands fa-whatsapp"></i>
                         </a>
@@ -821,19 +817,9 @@
                             <a href="https://wa.me/905522855561?text=Merhaba,%20Mükellef%20Portal%20hakkında%20bilgi%20almak%20istiyorum." target="_blank">Mesaj Gönder</a>
                         </div>
                     </div>
-
-                    
-                <div class="contact-map-container animate-on-scroll delay-1">
-                        <iframe
-                            src="https://maps.google.com/maps?q=41.297399,36.332208&t=&z=16&ie=UTF8&iwloc=&output=embed"
-                            width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"
-                            referrerpolicy="no-referrer-when-downgrade">
-                        </iframe>
-                    </div>
-
-                    
                 </div>
 
+                <!-- SAĞ KUTU: İletişim Formu (PHP İsimleri ve ID'ler KORUNDU) -->
                 <div class="contact-form-card">
                     <h3>Bizimle İletişime Geçin</h3>
                     <form id="mukellef-iletisim-formu">
@@ -844,7 +830,21 @@
                     </form>
                 </div>
 
+            </div> <!-- Buraları yan yana tutan div kapandı -->
+
+            <!-- ALT KISIM: Uzunca Boydan Boya Harita -->
+            <div class="contact-map-container animate-on-scroll delay-1">
+                <iframe 
+                    src="https://maps.google.com/maps?q=41.297399,36.332208&t=&z=16&ie=UTF8&iwloc=&output=embed" 
+                    width="100%" 
+                    height="350" 
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
             </div>
+            
         </div>
     </section>
 
