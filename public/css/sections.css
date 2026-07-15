@@ -23,24 +23,27 @@
     padding-left: 2%;
 }
 
+/* --- HERO SECTION BAŞLIK AYARLARI --- */
 .hero-content h1 {
-    font-size: 4rem;
-    font-weight: 800;
-    line-height: 1.1;
-    letter-spacing: -1.5px;
-    margin-bottom: 25px;
-    color: var(--text-dark);
-    background: none !important;
-    padding: 0 !important;
+    font-family: 'Outfit', sans-serif; /* Teknolojik ve modern font eklendi */
+    font-weight: 300; /* "Mali Müşavirlerin Dijital Ofisi" kısmı İNCE yapıldı */
+    font-size: 4rem; 
+    line-height: 1.1; 
+    letter-spacing: -1.5px; 
+    margin-bottom: 25px; 
+    color: var(--text-dark); 
+    background: none !important; 
+    padding: 0 !important; 
 }
 
 .hero-content h1 span {
-    color: var(--accent-color);
-    display: block;
-    margin-top: 8px;
-    font-weight: 800;
-    background: none !important;
-    padding: 0 !important;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 800; /* "Tüm Süreçleriniz Tek Ekranda" kısmı KALIN (Vurgulu) yapıldı */
+    color: var(--accent-color); 
+    display: block; 
+    margin-top: 8px; 
+    background: none !important; 
+    padding: 0 !important; 
 }
 
 .hero-content p {

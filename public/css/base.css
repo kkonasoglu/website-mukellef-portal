@@ -105,11 +105,16 @@ h3,
 h4,
 .intro-title,
 .contact-title {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    /* Poppins yerine bu geldi */
     font-weight: 700;
     line-height: 1.2;
     margin-bottom: 15px;
     letter-spacing: -0.5px;
+}
+
+.hero-content h1 {
+    font-weight: 800; /* Plus Jakarta Sans'ın ekstra kalın hali başlıkta çok güçlü durur */
 }
 
 h2 {
