@@ -1,13 +1,15 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    // --- 1. Theme Toggle (Karanlık/Aydınlık Tema) ---
+    // ==========================================
+    // 1. TEMA YÖNETİMİ (Karanlık/Aydınlık Tema)
+    // ==========================================
     const themeToggleBtn = document.getElementById('themeToggle');
     const htmlElement = document.documentElement;
 
     if (themeToggleBtn) {
         const themeIcon = themeToggleBtn.querySelector('i');
-        // LocalStorage kontrolü
         const savedTheme = localStorage.getItem('theme');
+        
         if (savedTheme === 'dark') {
             htmlElement.setAttribute('data-theme', 'dark');
             if (themeIcon) {
@@ -36,7 +38,9 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // --- 2. Sticky Header ---
+    // ==========================================
+    // 2. YAPIŞKAN (STICKY) HEADER
+    // ==========================================
     const header = document.getElementById('header');
     if (header) {
         window.addEventListener('scroll', () => {
@@ -48,13 +52,11 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // --- 3. Mobile Menu Toggle + Body Scroll Lock ---
+    // ==========================================
+    // 3. MOBİL MENÜ & SCROLL KİLİDİ
+    // ==========================================
     const mobileMenuBtn = document.getElementById('mobileMenuBtn');
     const navbar = document.getElementById('navbar');
-
-    // Menü açıkken arka planın kaymasını engelleyen kilit.
-    // position:fixed tekniği iOS Safari dahil her cihazda çalışır;
-    // scroll konumu saklanır ve menü kapanınca aynen geri yüklenir.
     let savedScrollY = 0;
 
     function lockBodyScroll() {
@@ -67,7 +69,6 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!document.body.classList.contains('menu-open')) return;
         document.body.classList.remove('menu-open');
         document.body.style.top = '';
-        // 'instant' ile geri dön; smooth scroll animasyonu tetiklenmesin
         window.scrollTo({ top: savedScrollY, left: 0, behavior: 'instant' });
     }
 
@@ -98,12 +99,10 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
 
-        // Menü linkine tıklanınca menüyü kapat ve kilidi kaldır
         document.querySelectorAll('.nav-link').forEach(link => {
             link.addEventListener('click', closeMobileMenu);
         });
 
-        // Masaüstü boyutuna dönülürse menü açık kalmışsa temizle
         window.addEventListener('resize', () => {
             if (window.innerWidth > 768 && navbar.classList.contains('active')) {
                 closeMobileMenu();
@@ -111,7 +110,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // --- 4. Mobile Dropdown Toggle ---
+    // Mobil Açılır Menü (Dropdown) Desteği
     const dropdowns = document.querySelectorAll('.dropdown');
     dropdowns.forEach(dropdown => {
         const link = dropdown.querySelector('a');
@@ -125,7 +124,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // --- 5. Scroll Animations ---
+    // ==========================================
+    // 4. SCROLL ANİMASYONLARI (Intersection Observer)
+    // ==========================================
     const animatedElements = document.querySelectorAll('.animate-on-scroll');
     if (animatedElements.length > 0) {
         const observerOptions = {
@@ -147,149 +148,123 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // --- 6. Advanced 12-Item Testimonial Slider (KORUMALI) ---
-    const track = document.getElementById('sliderTrack');
-    const prevBtn = document.querySelector('.prev-btn');
-    const nextBtn = document.querySelector('.next-btn');
-    const cards = document.querySelectorAll('.testimonial-card');
-    const dotsContainer = document.getElementById('sliderDots');
+    // ==========================================
+    // 5. SCROLLSPY (Aktif Menü Linki Güncelleme)
+    // ==========================================
+    const sections = document.querySelectorAll("section[id]");
+    const navLinks = document.querySelectorAll(".nav-link");
 
-    let currentIndex = 0;
-    let maxIndex = 0;
-
-    function getCardsPerView() {
-        if (window.innerWidth <= 768) return 1;
-        if (window.innerWidth <= 992) return 2;
-        return 4;
-    }
-
-    function generateDots() {
-        // ÇÖZÜM: Eğer bu sayfada slider dots alanı yoksa fonksiyonu güvenle kır, çökme!
-        if (!dotsContainer || cards.length === 0) return;
-        
-        dotsContainer.innerHTML = '';
-        const cardsPerView = getCardsPerView();
-        maxIndex = cards.length - cardsPerView;
-
-        for (let i = 0; i <= maxIndex; i++) {
-            const dot = document.createElement('span');
-            dot.classList.add('dot');
-            if (i === currentIndex) dot.classList.add('active');
-
-            dot.addEventListener('click', () => {
-                currentIndex = i;
-                updateSlider();
-            });
-
-            dotsContainer.appendChild(dot);
-        }
-    }
-
-    function updateSlider() {
-        // ÇÖZÜM: Eğer slider bileşenleri sayfada yoksa işlem yapma
-        if (!track || cards.length === 0 || !dotsContainer) return;
-
-        const cardsPerView = getCardsPerView();
-        maxIndex = cards.length - cardsPerView;
-
-        if (currentIndex > maxIndex) currentIndex = maxIndex;
-        if (currentIndex < 0) currentIndex = 0;
-
-        const cardWidth = cards[0].offsetWidth;
-        const gap = 30;
-
-        track.style.transform = `translateX(-${currentIndex * (cardWidth + gap)}px)`;
-
-        const allDots = dotsContainer.querySelectorAll('.dot');
-        allDots.forEach((dot, index) => {
-            if (index === currentIndex) {
-                dot.classList.add('active');
-            } else {
-                dot.classList.remove('active');
-            }
-        });
-    }
-
-    if (nextBtn && prevBtn) {
-        nextBtn.addEventListener('click', () => {
-            if (currentIndex < maxIndex) {
-                currentIndex++;
-                updateSlider();
+    window.addEventListener("scroll", () => {
+        let current = "";
+        sections.forEach((section) => {
+            const sectionTop = section.offsetTop;
+            if (window.scrollY >= sectionTop - 100) {
+                current = section.getAttribute("id");
             }
         });
 
-        prevBtn.addEventListener('click', () => {
-            if (currentIndex > 0) {
-                currentIndex--;
-                updateSlider();
+        navLinks.forEach((link) => {
+            link.classList.remove("active");
+            if (link.getAttribute("href") === `#${current}`) {
+                link.classList.add("active");
             }
         });
-    }
-
-    window.addEventListener('resize', () => {
-        if (window.innerWidth > 768) {
-            dropdowns.forEach(dd => dd.classList.remove('active'));
-        }
-        generateDots();
-        updateSlider();
     });
 
-    // Sadece slider elemanları varsa tetikle
-    if (track && dotsContainer) {
-        generateDots();
-        updateSlider();
-    }
-});
+    // ==========================================
+    // 6. YUKARI ÇIK BUTONU VE İLERLEME ÇEMBERİ
+    // ==========================================
+    const scrollBtn = document.getElementById("progress-scroll-btn");
+    const progressPath = document.querySelector(".progress-circle path");
+    
+    if (scrollBtn && progressPath) {
+        const pathLength = progressPath.getTotalLength();
+        progressPath.style.strokeDasharray = `${pathLength} ${pathLength}`;
+        progressPath.style.strokeDashoffset = pathLength;
 
-// ==========================================
-// --- 7. PHP MAILER İLETİŞİM FORMU (AJAX) ---
-// ==========================================
-document.addEventListener('DOMContentLoaded', () => {
+        const updateProgress = () => {
+            const scroll = window.scrollY || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            
+            const progress = pathLength - (scroll * pathLength) / height;
+            progressPath.style.strokeDashoffset = progress;
+
+            if (scroll > 200) {
+                scrollBtn.classList.add("active");
+            } else {
+                scrollBtn.classList.remove("active");
+            }
+        };
+
+        scrollBtn.addEventListener("click", () => {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+
+        window.addEventListener("scroll", updateProgress);
+    }
+
+    // ==========================================
+    // 7. WHATSAPP LİNK KONTROLÜ (PC/Mobil)
+    // ==========================================
+    const whatsappLink = document.getElementById('whatsapp-link');
+    const phoneNumber = '0552 285 55 61';
+
+    if (whatsappLink) {
+        whatsappLink.addEventListener('click', (e) => {
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+            if (!isMobile) {
+                e.preventDefault(); 
+                navigator.clipboard.writeText(phoneNumber).then(() => {
+                    const originalHTML = whatsappLink.innerHTML;
+                    whatsappLink.innerHTML = '<i class="fa-solid fa-check"></i>';
+                    setTimeout(() => {
+                        whatsappLink.innerHTML = originalHTML;
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Numara kopyalanamadı: ', err);
+                });
+            }
+        });
+    }
+
+    // ==========================================
+    // 8. PHP MAILER İLETİŞİM FORMU (AJAX)
+    // ==========================================
     const formElement = document.getElementById('mukellef-iletisim-formu');
 
     if (formElement) {
         formElement.addEventListener('submit', function (event) {
-            event.preventDefault(); // Sayfanın yenilenmesini engeller
-
+            event.preventDefault(); 
             const submitBtn = document.getElementById('form-submit-btn');
             const originalBtnText = submitBtn ? submitBtn.innerText : "Gönder";
 
-            // Butonu yükleniyor durumuna al
             if (submitBtn) {
                 submitBtn.innerText = "Gönderiliyor...";
                 submitBtn.disabled = true;
                 submitBtn.style.opacity = "0.7";
             }
 
-            // Formdaki tüm input verilerini otomatik olarak paketle
             const formData = new FormData(this);
 
-            // Verileri PHP dosyasına POST metodu ile gönder
             fetch('send-mail.php', {
                 method: 'POST',
                 body: formData
             })
             .then(response => {
-                if (!response.ok) {
-                    throw new Error('Sunucu hatası oluştu');
-                }
+                if (!response.ok) throw new Error('Sunucu hatası oluştu');
                 return response.json();
             })
             .then(data => {
-                // PHP'nin döndürdüğü sonucu kontrol et
-                if (!data.basarili) {
-                    throw new Error(data.mesaj || 'Gönderim başarısız');
-                }
+                if (!data.basarili) throw new Error(data.mesaj || 'Gönderim başarısız');
                 alert('Mesajınız başarıyla iletildi! En kısa sürede dönüş yapacağız.');
-                formElement.reset(); // Form kutularını temizle
+                formElement.reset(); 
             })
             .catch((error) => {
-                // Hata durumu
                 console.error('Form Gönderim Hatası:', error);
                 alert('Mesaj gönderilirken bir sorun oluştu. Lütfen daha sonra tekrar deneyin.');
             })
             .finally(() => {
-                // İşlem bitince butonu eski haline geri getir
                 if (submitBtn) {
                     submitBtn.innerText = originalBtnText;
                     submitBtn.disabled = false;
@@ -298,201 +273,114 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
-});
 
-    // --- 8. ScrollSpy (Sayfa Kaydırıldıkça Navigasyonun Güncellenmesi) ---
-    const sections = document.querySelectorAll("section[id]");
-    const navLinks = document.querySelectorAll(".nav-link");
-
-    window.addEventListener("scroll", () => {
-        let current = "";
-
-        sections.forEach((section) => {
-            const sectionTop = section.offsetTop;
-            const sectionHeight = section.clientHeight;
-            
-            // Yukarıdaki yapışkan (sticky) header'ın yüksekliğini hesaba katmak için
-            // 100px civarı bir pay (offset) bırakıyoruz.
-            if (window.scrollY >= sectionTop - 100) {
-                current = section.getAttribute("id");
-            }
-        });
-
-        // Tüm linklerden active sınıfını temizle, sadece ekranda olan section'a ait linke ekle
-        navLinks.forEach((link) => {
-            link.classList.remove("active");
-            if (link.getAttribute("href") === `#${current}`) {
-                link.classList.add("active");
-            }
-        });
-    });
-    /* =========================================
-   WHATSAPP LİNK KONTROLÜ (PC'de Kopyala, Mobilde Aç)
-========================================= */
-document.addEventListener('DOMContentLoaded', () => {
-    const whatsappLink = document.getElementById('whatsapp-link');
-    const phoneNumber = '0552 285 55 61'; // Kopyalanmasını istediğin format
-
-    if (whatsappLink) {
-        whatsappLink.addEventListener('click', (e) => {
-            // Kullanıcının mobil cihazdan girip girmediğini kontrol et
-            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-
-            // Eğer cihaz BİLGİSAYAR ise (mobil değilse)
-            if (!isMobile) {
-                e.preventDefault(); // Sayfa yönlendirmesini (wa.me) iptal et
-                
-                // Numarayı panoya (clipboard) kopyala
-                navigator.clipboard.writeText(phoneNumber).then(() => {
-                    // Kullanıcıya kopyalandığını belli etmek için ikon anlık olarak 'Tik' işaretine dönsün
-                    const originalHTML = whatsappLink.innerHTML;
-                    whatsappLink.innerHTML = '<i class="fa-solid fa-check"></i>';
-                    
-                    // 2 saniye sonra WhatsApp ikonunu geri getir
-                    setTimeout(() => {
-                        whatsappLink.innerHTML = originalHTML;
-                    }, 2000);
-                    
-                }).catch(err => {
-                    console.error('Numara kopyalanamadı: ', err);
-                });
-            }
-            // Eğer cihaz MOBİL ise koda hiç dokunmuyoruz, href="..." çalışıyor ve uygulama açılıyor.
-        });
-    }
-});
-
-
-        document.addEventListener("DOMContentLoaded", () => {
-            const scrollBtn = document.getElementById("progress-scroll-btn");
-            const progressPath = document.querySelector(".progress-circle path");
-            const pathLength = progressPath.getTotalLength();
-
-            progressPath.style.strokeDasharray = `${pathLength} ${pathLength}`;
-            progressPath.style.strokeDashoffset = pathLength;
-
-            const updateProgress = () => {
-                const scroll = window.scrollY || document.documentElement.scrollTop;
-                const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-                
-                const progress = pathLength - (scroll * pathLength) / height;
-                progressPath.style.strokeDashoffset = progress;
-
-                if (scroll > 200) {
-                    scrollBtn.classList.add("active");
-                } else {
-                    scrollBtn.classList.remove("active");
-                }
-            };
-
-            scrollBtn.addEventListener("click", () => {
-                window.scrollTo({
-                    top: 0,
-                    behavior: "smooth"
-                });
-            });
-
-            window.addEventListener("scroll", updateProgress);
-        });
-
-        document.addEventListener('DOMContentLoaded', () => {
+    // ==========================================
+    // 9. YORUMLAR (TESTIMONIALS) SLIDER (Sonsuz & Autoplay)
+    // ==========================================
     const track = document.getElementById('testimonialTrack');
     const prevBtn = document.getElementById('t-prev');
     const nextBtn = document.getElementById('t-next');
     const container = document.querySelector('.testimonial-track-container');
     
-    if (!track || !container) return;
+    if (track && container) {
+        let isAnimating = false; 
+        const gap = 20; 
 
-    let isAnimating = false; // Animasyon bitmeden peş peşe tıklanarak bozulmasını önler
-    const gap = 20; // yorumlar.css dosyasındaki gap değeri ile aynı olmalıdır
-
-    // Kart genişliğini dinamik hesaplayan fonksiyon
-    function getCardWidth() {
-        const card = track.querySelector('.testimonial-card');
-        return card ? card.offsetWidth + gap : 0;
-    }
-
-    // --- İLERİ (NEXT) BUTONU (Sonsuz Döngü) ---
-    if(nextBtn) {
-        nextBtn.addEventListener('click', () => {
-            if (isAnimating) return;
-            isAnimating = true;
-            
-            const moveAmount = getCardWidth();
-            
-            // 1. Önce sola doğru animasyonlu kaydır
-            track.style.transition = 'transform 0.4s ease-in-out';
-            track.style.transform = `translateX(-${moveAmount}px)`;
-            
-            // 2. Animasyon bittiğinde (0.4s sonra) ilk elemanı alıp en sona gizlice ekle
-            setTimeout(() => {
-                track.style.transition = 'none'; // Geçişi kapat ki sıfırlama belli olmasın
-                track.appendChild(track.firstElementChild); // 1. kartı kopar, en sona yapıştır
-                track.style.transform = 'translateX(0)'; // Konumu anında sıfırla
-                isAnimating = false;
-            }, 400); // 0.4s (400ms) transition süresiyle aynı
-        });
-    }
-
-    // --- GERİ (PREV) BUTONU (Sonsuz Döngü) ---
-    if(prevBtn) {
-        prevBtn.addEventListener('click', () => {
-            if (isAnimating) return;
-            isAnimating = true;
-            
-            const moveAmount = getCardWidth();
-            
-            // 1. En sondaki elemanı al, gizlice en başa koy
-            track.insertBefore(track.lastElementChild, track.firstElementChild);
-            
-            // 2. Kaymayı hissettirmemek için track'i anında bir kart genişliği kadar sola it
-            track.style.transition = 'none';
-            track.style.transform = `translateX(-${moveAmount}px)`;
-            
-            // Tarayıcıyı bu pozisyon değişikliğini okumaya zorla (Reflow)
-            track.offsetHeight; 
-            
-            // 3. Şimdi animasyonu aç ve sıfır noktasına (sağa doğru) kaydır
-            track.style.transition = 'transform 0.4s ease-in-out';
-            track.style.transform = 'translateX(0)';
-            
-            setTimeout(() => {
-                isAnimating = false;
-            }, 400);
-        });
-    }
-
-    // --- MOBİL İÇİN KAYDIRMA (SWIPE) DESTEĞİ ---
-    // Yeni yapıya uygun daha kararlı ve hatasız kaydırma algoritması
-    let touchStartX = 0;
-    let touchEndX = 0;
-
-    container.addEventListener('touchstart', e => {
-        touchStartX = e.changedTouches[0].screenX;
-    }, { passive: true });
-
-    container.addEventListener('touchend', e => {
-        touchEndX = e.changedTouches[0].screenX;
-        handleSwipe();
-    }, { passive: true });
-
-    // Masaüstü fare ile sürükleme
-    container.addEventListener('mousedown', e => {
-        touchStartX = e.screenX;
-    });
-
-    container.addEventListener('mouseup', e => {
-        touchEndX = e.screenX;
-        handleSwipe();
-    });
-
-    function handleSwipe() {
-        // Eşik değeri 50px: Sağa veya sola yeterince çekildiyse buton tıklamasını tetikle
-        if (touchEndX < touchStartX - 50) {
-            if (nextBtn) nextBtn.click(); // Sola çektik (İleri git)
+        function getCardWidth() {
+            const card = track.querySelector('.testimonial-card');
+            return card ? card.offsetWidth + gap : 0;
         }
-        if (touchEndX > touchStartX + 50) {
-            if (prevBtn) prevBtn.click(); // Sağa çektik (Geri gel)
+
+        // İleri Butonu
+        if(nextBtn) {
+            nextBtn.addEventListener('click', () => {
+                if (isAnimating) return;
+                isAnimating = true;
+                
+                const moveAmount = getCardWidth();
+                track.style.transition = 'transform 0.4s ease-in-out';
+                track.style.transform = `translateX(-${moveAmount}px)`;
+                
+                setTimeout(() => {
+                    track.style.transition = 'none'; 
+                    track.appendChild(track.firstElementChild); 
+                    track.style.transform = 'translateX(0)'; 
+                    isAnimating = false;
+                }, 400); 
+            });
         }
+
+        // Geri Butonu
+        if(prevBtn) {
+            prevBtn.addEventListener('click', () => {
+                if (isAnimating) return;
+                isAnimating = true;
+                
+                const moveAmount = getCardWidth();
+                track.insertBefore(track.lastElementChild, track.firstElementChild);
+                track.style.transition = 'none';
+                track.style.transform = `translateX(-${moveAmount}px)`;
+                track.offsetHeight; 
+                
+                track.style.transition = 'transform 0.4s ease-in-out';
+                track.style.transform = 'translateX(0)';
+                
+                setTimeout(() => {
+                    isAnimating = false;
+                }, 400);
+            });
+        }
+
+        // Mobil Swipe (Kaydırma) Desteği
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        container.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+
+        container.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, { passive: true });
+
+        container.addEventListener('mousedown', e => {
+            touchStartX = e.screenX;
+        });
+
+        container.addEventListener('mouseup', e => {
+            touchEndX = e.screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            if (touchEndX < touchStartX - 50) {
+                if (nextBtn) nextBtn.click(); 
+            }
+            if (touchEndX > touchStartX + 50) {
+                if (prevBtn) prevBtn.click(); 
+            }
+        }
+
+        // Otomatik Oynatma (Auto-Play) Sistemi
+        let autoPlayInterval;
+        const autoPlayDelay = 4000; 
+
+        function startAutoPlay() {
+            autoPlayInterval = setInterval(() => {
+                if (nextBtn) nextBtn.click(); 
+            }, autoPlayDelay);
+        }
+
+        function stopAutoPlay() {
+            clearInterval(autoPlayInterval);
+        }
+
+        startAutoPlay();
+        container.addEventListener('mouseenter', stopAutoPlay);
+        container.addEventListener('mouseleave', startAutoPlay);
+        container.addEventListener('touchstart', stopAutoPlay, { passive: true });
+        container.addEventListener('touchend', startAutoPlay, { passive: true });
     }
+
 });
