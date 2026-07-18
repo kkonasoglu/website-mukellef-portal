@@ -61,6 +61,25 @@
     max-height: 70px;
 }
 
+/* --- TEMA LOGO GEÇİŞİ --- */
+
+/* Varsayılan olarak karanlık (beyaz yazılı) logoyu gizle */
+.logo-dark {
+    display: none !important;
+}
+
+/* Sistem karanlık temaya geçtiğinde eski logoyu gizle */
+[data-theme="dark"] .logo-light {
+    display: none !important;
+}
+
+/* Sistem karanlık temaya geçtiğinde yeni logoyu göster */
+[data-theme="dark"] .logo-dark {
+    display: block !important;
+}
+
+
+
 .navbar ul {
     display: flex;
     gap: 32px;

@@ -846,3 +846,94 @@
     border-radius: 8px;
     background-color: var(--bg-light);
 }
+
+
+/* =========================================
+   PARTNER KARTLARI VE LOGO İYİLEŞTİRMELERİ
+========================================= */
+
+/* 1. Kartlara Havalanma (Lift) Efekti */
+.partner-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.partner-card:hover {
+    transform: translateY(-5px); /* Fare gelince kartı 5px yukarı kaldırır */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* Aydınlık tema için yumuşak gölge */
+}
+
+/* 2. KARANLIK TEMA ÖZEL LOGO AYARLARI */
+[data-theme="dark"] .partner-card img {
+    /* Logoları karanlıkta saf beyaza çevirir ve göz yormaması için saydamlaştırır */
+    filter: brightness(0) invert(1) !important;
+    opacity: 0.5 !important; 
+}
+
+[data-theme="dark"] .partner-card:hover img {
+    /* Fare üzerine gelince logolar tam beyaz olur ve arkasında hafif bir parlama (glow) oluşur */
+    filter: brightness(0) invert(1) drop-shadow(0 0 8px rgba(255, 255, 255, 0.4)) !important;
+    opacity: 1 !important;
+}
+
+[data-theme="dark"] .partner-card:hover {
+    /* Karanlık temada kartın dış gölgesini temaya uygun hale getirir */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5); 
+}
+
+/* =========================================
+   HERO BÖLÜMÜ GÖRSEL İYİLEŞTİRMELERİ (Buzlu Cam, Işık, Parlama)
+========================================= */
+
+/* --- 2. GLASSMORPHISM (BUZLU CAM) EFEKTİ --- */
+/* Aydınlık temada kartların daha şık durması için hafif geçirgenlik */
+.floating-card {
+    background: rgba(255, 255, 255, 0.85) !important; 
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.6) !important;
+}
+
+/* Karanlık temada kartların arka planını tam bir buzlu cam gibi yapar */
+[data-theme="dark"] .floating-card {
+    background: rgba(31, 41, 55, 0.4) !important; 
+    backdrop-filter: blur(12px) !important; 
+    -webkit-backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important; 
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important; 
+}
+
+/* Karanlık temada kartların içindeki ikonların kutularını da uyumlu hale getiriyoruz */
+[data-theme="dark"] .floating-card i {
+    background: rgba(99, 102, 241, 0.15) !important;
+    color: #818cf8 !important;
+}
+
+/* --- 3. ATMOSFERİK IŞIKLANDIRMA (GLOW BLOB) --- */
+/* Sağ taraftaki boşluğu dolduracak, objelerin arkasında duran bulanık ışık kümesi */
+.hero-visual::after {
+    content: '';
+    position: absolute;
+    width: 450px;
+    height: 450px;
+    background: var(--accent-color);
+    border-radius: 50%;
+    filter: blur(120px); /* Işığı tamamen dağıtıp pürüzsüzleştirir */
+    opacity: 0.15; /* Aydınlık temada sadece hafif bir parlama verir */
+    z-index: 0; /* Kartların ve noktalı desenin arkasında kalsın */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none; /* Farenin kartların üzerine gelmesini engellemesin */
+}
+
+/* Karanlık temada ışığı arka planda daha belirgin ve dramatik hale getiriyoruz */
+[data-theme="dark"] .hero-visual::after {
+    opacity: 0.35; 
+}
+
+/* --- 4. METİN KONTRASTI VE PARLAMA --- */
+/* "Tüm Süreçleriniz Tek Ekranda" metnine karanlık temada neon/parlama efekti */
+[data-theme="dark"] .hero-content h1 span {
+    color: #818cf8 !important; /* Rengi bir tık daha aydınlık bir lila/mavi yapıyoruz */
+    text-shadow: 0 0 25px rgba(129, 140, 248, 0.5); /* Harflerin arkasına hafif bir parlama (glow) ekler */
+}

@@ -1,39 +1,51 @@
 document.addEventListener("DOMContentLoaded", () => {
-
-    // ==========================================
+// ==========================================
     // 1. TEMA YÖNETİMİ (Karanlık/Aydınlık Tema)
     // ==========================================
     const themeToggleBtn = document.getElementById('themeToggle');
     const htmlElement = document.documentElement;
+    const mainLogo = document.getElementById('main-logo'); // HTML'e eklediğimiz ID'yi seçtik
 
     if (themeToggleBtn) {
         const themeIcon = themeToggleBtn.querySelector('i');
         const savedTheme = localStorage.getItem('theme');
         
+        // --- SAYFA İLK YÜKLENDİĞİNDE ---
         if (savedTheme === 'dark') {
             htmlElement.setAttribute('data-theme', 'dark');
             if (themeIcon) {
                 themeIcon.classList.remove('fa-moon');
                 themeIcon.classList.add('fa-sun');
             }
+            // Sayfa karanlık açılıyorsa beyaz logoyu koy
+            if (mainLogo) mainLogo.src = 'images/logolar/sirket-logo-beyaz.png'; 
         }
 
+        // --- BUTONA TIKLANDIĞINDA ---
         themeToggleBtn.addEventListener('click', () => {
             const currentTheme = htmlElement.getAttribute('data-theme');
+            
             if (currentTheme === 'dark') {
+                // Aydınlık Temaya Geçiş
                 htmlElement.removeAttribute('data-theme');
                 localStorage.setItem('theme', 'light');
                 if (themeIcon) {
                     themeIcon.classList.remove('fa-sun');
                     themeIcon.classList.add('fa-moon');
                 }
+                // Aydınlık temaya geçince siyah logoyu geri getir
+                if (mainLogo) mainLogo.src = 'images/logolar/mukellef-portal-logo.png'; 
+                
             } else {
+                // Karanlık Temaya Geçiş
                 htmlElement.setAttribute('data-theme', 'dark');
                 localStorage.setItem('theme', 'dark');
                 if (themeIcon) {
                     themeIcon.classList.remove('fa-moon');
                     themeIcon.classList.add('fa-sun');
                 }
+                // Karanlık temaya geçince beyaz logoyu koy
+                if (mainLogo) mainLogo.src = 'images/logolar/sirket-logo-beyaz.png'; 
             }
         });
     }
