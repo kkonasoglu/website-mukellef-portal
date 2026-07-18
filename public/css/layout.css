@@ -317,3 +317,58 @@ body.menu-open {
 [data-theme="dark"] #progress-scroll-btn:hover .progress-circle path { 
     stroke: #ffffff !important; 
 }
+
+
+/* =========================================
+   PRELOADER (YÜKLEME EKRANI)
+========================================= */
+#preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-white); /* Karanlık ve aydınlık temaya otomatik uyar */
+    z-index: 999999; /* Her şeyin üstünde görünmesini sağlar */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+
+/* Yükleme bittiğinde bu sınıf JS ile eklenecek ve ekranı yavaşça silecektir */
+#preloader.fade-out {
+    opacity: 0;
+    visibility: hidden;
+}
+
+/* Dönen Çember Animasyonu */
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid rgba(67, 56, 202, 0.15); /* Vurgu renginin saydam hali */
+    border-top: 4px solid var(--accent-color); /* Dönen ana renk */
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
+}
+
+/* Yükleniyor Yazısı Animasyonu */
+.loading-text {
+    color: var(--text-dark);
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: 1px;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}

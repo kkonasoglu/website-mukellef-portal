@@ -4,7 +4,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // ==========================================
     const themeToggleBtn = document.getElementById('themeToggle');
     const htmlElement = document.documentElement;
-    const mainLogo = document.getElementById('main-logo'); // HTML'e eklediğimiz ID'yi seçtik
+    const mainLogo = document.getElementById('main-logo');     // Üst menü logosu
+    const footerLogo = document.getElementById('footer-logo'); // Footer logosunu da JS'e tanıttık
 
     if (themeToggleBtn) {
         const themeIcon = themeToggleBtn.querySelector('i');
@@ -17,8 +18,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 themeIcon.classList.remove('fa-moon');
                 themeIcon.classList.add('fa-sun');
             }
-            // Sayfa karanlık açılıyorsa beyaz logoyu koy
-            if (mainLogo) mainLogo.src = 'images/logolar/sirket-logo-beyaz.png'; 
+            // Sayfa karanlık açılıyorsa her iki logoyu da BEYAZ yap
+            if (mainLogo) mainLogo.src = 'images/logolar/yeni-beyaz-logo.png'; 
+            if (footerLogo) footerLogo.src = 'images/logolar/yeni-beyaz-logo.png'; 
         }
 
         // --- BUTONA TIKLANDIĞINDA ---
@@ -33,8 +35,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     themeIcon.classList.remove('fa-sun');
                     themeIcon.classList.add('fa-moon');
                 }
-                // Aydınlık temaya geçince siyah logoyu geri getir
+                // Aydınlık temaya geçince her iki logoyu SİYAH yap
                 if (mainLogo) mainLogo.src = 'images/logolar/mukellef-portal-logo.png'; 
+                if (footerLogo) footerLogo.src = 'images/logolar/mukellef-portal-logo.png'; 
                 
             } else {
                 // Karanlık Temaya Geçiş
@@ -44,8 +47,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     themeIcon.classList.remove('fa-moon');
                     themeIcon.classList.add('fa-sun');
                 }
-                // Karanlık temaya geçince beyaz logoyu koy
+                // Karanlık temaya geçince her iki logoyu BEYAZ yap
                 if (mainLogo) mainLogo.src = 'images/logolar/sirket-logo-beyaz.png'; 
+                if (footerLogo) footerLogo.src = 'images/logolar/sirket-logo-beyaz.png'; 
             }
         });
     }
@@ -442,32 +446,18 @@ document.addEventListener("DOMContentLoaded", () => {
             counterObserver.observe(statsContainer);
         }
     }
-
     // ==========================================
-    // 11. 3D MOCKUP CAROUSEL ANİMASYONU
+    // 12. PRELOADER (YÜKLEME EKRANI)
     // ==========================================
-    const carouselImages = document.querySelectorAll('.carousel-img');
-    
-    if(carouselImages.length === 3) {
-        // Her 3.5 saniyede bir resimleri döndür
-        setInterval(() => {
-            // Mevcut sınıflara sahip elementleri bul
-            const active = document.querySelector('.carousel-img.active');
-            const next = document.querySelector('.carousel-img.next');
-            const prev = document.querySelector('.carousel-img.prev');
-
-            if(active && next && prev) {
-                // Saat yönünde sınıf değiştirme işlemi
-                active.classList.remove('active');
-                active.classList.add('prev');
-
-                next.classList.remove('next');
-                next.classList.add('active');
-
-                prev.classList.remove('prev');
-                prev.classList.add('next');
-            }
-        }, 3500); // 3500 milisaniye (3.5 saniye)
-    }
+    // Sayfadaki tüm resimler ve dosyalar yüklendiğinde çalışır (load eventi)
+    window.addEventListener('load', () => {
+        const preloader = document.getElementById('preloader');
+        if (preloader) {
+            // Yükleme çok hızlı bitse bile animasyonun şık görünmesi için 0.5 saniye ekranda tutuyoruz
+            setTimeout(() => {
+                preloader.classList.add('fade-out');
+            }, 500); 
+        }
+    });
 
 });
