@@ -992,3 +992,61 @@
 [data-theme="dark"] .carousel-img {
     border-color: #374151; /* --border-color değerine denk gelir */
 }
+
+
+/* =========================================
+   MOCKUP CİHAZ DEĞİŞTİRME BUTONLARI VE MASAÜSTÜ MODU
+========================================= */
+.device-toggle-wrapper {
+    position: absolute;
+    right: -70px; /* Senin çizdiğin kırmızı alana, resmin sağ tarafına tam ortalar */
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    z-index: 10;
+}
+
+.device-btn {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    border: none;
+    background: var(--bg-white);
+    color: var(--text-muted);
+    font-size: 1.2rem;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.device-btn:hover {
+    transform: scale(1.1);
+    color: var(--accent-color);
+}
+
+.device-btn.active {
+    background: var(--accent-color);
+    color: #ffffff;
+    box-shadow: 0 4px 15px rgba(67, 56, 202, 0.4);
+}
+
+/* Masaüstü Modu İçin Carousel Boyut Güncellemesi */
+.mockup-carousel {
+    transition: max-width 0.6s cubic-bezier(0.4, 0, 0.2, 1), height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mockup-carousel.desktop-mode {
+    max-width: 850px; /* 520'den 680'e çıkardık, artık çok daha okunabilir olacak */
+    height: 500px; /* Yatay ekran için oranı dengeledik */
+}
+
+/* Cihaz değişirken animasyonun bozulmaması için güvenli kararma sınıfı */
+.carousel-img.fade-out {
+    opacity: 0 !important;
+    transform: scale(0.9) !important;
+}

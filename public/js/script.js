@@ -4,53 +4,47 @@ document.addEventListener("DOMContentLoaded", () => {
     // ==========================================
     const themeToggleBtn = document.getElementById('themeToggle');
     const htmlElement = document.documentElement;
-    const mainLogo = document.getElementById('main-logo');     // Üst menü logosu
-    const footerLogo = document.getElementById('footer-logo'); // Footer logosunu da JS'e tanıttık
+    const mainLogo = document.getElementById('main-logo');     
+    const footerLogo = document.getElementById('footer-logo'); 
 
-    if (themeToggleBtn) {
-        const themeIcon = themeToggleBtn.querySelector('i');
-        const savedTheme = localStorage.getItem('theme');
-        
-        // --- SAYFA İLK YÜKLENDİĞİNDE ---
-        if (savedTheme === 'dark') {
+    // 1. Kayıtlı temayı al. Eğer kayıt yoksa kullanıcının işletim sistemi temasına (Dark/Light) bak
+    let currentTheme = localStorage.getItem('theme');
+    if (!currentTheme) {
+        currentTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+
+    // 2. Temayı ve logoları her yere kusursuz uygulayan ana fonksiyon
+    function applyTheme(theme) {
+        if (theme === 'dark') {
             htmlElement.setAttribute('data-theme', 'dark');
-            if (themeIcon) {
-                themeIcon.classList.remove('fa-moon');
-                themeIcon.classList.add('fa-sun');
+            if (themeToggleBtn) {
+                themeToggleBtn.querySelector('i').className = 'fa-solid fa-sun';
             }
-            // Sayfa karanlık açılıyorsa her iki logoyu da BEYAZ yap
-            if (mainLogo) mainLogo.src = 'images/logolar/yeni-beyaz-logo.png'; 
-            if (footerLogo) footerLogo.src = 'images/logolar/yeni-beyaz-logo.png'; 
+            // Karanlık tema aktifse logoları beyaza çevir
+            if (mainLogo) mainLogo.src = 'images/logolar/sirket-logo-beyaz.png'; 
+            if (footerLogo) footerLogo.src = 'images/logolar/sirket-logo-beyaz.png'; 
+        } else {
+            htmlElement.removeAttribute('data-theme');
+            if (themeToggleBtn) {
+                themeToggleBtn.querySelector('i').className = 'fa-solid fa-moon';
+            }
+            // Aydınlık tema aktifse logoları siyaha çevir
+            if (mainLogo) mainLogo.src = 'images/logolar/mukellef-portal-logo.png'; 
+            if (footerLogo) footerLogo.src = 'images/logolar/mukellef-portal-logo.png'; 
         }
+    }
 
-        // --- BUTONA TIKLANDIĞINDA ---
+    // 3. Sayfa ilk yüklendiğinde hafızadaki/sistemdeki temayı uygula
+    applyTheme(currentTheme);
+
+    // 4. Butona tıklandığında temayı değiştir ve hafızaya kaydet
+    if (themeToggleBtn) {
         themeToggleBtn.addEventListener('click', () => {
-            const currentTheme = htmlElement.getAttribute('data-theme');
+            const isDark = htmlElement.getAttribute('data-theme') === 'dark';
+            const newTheme = isDark ? 'light' : 'dark'; // Mevcut durumun tersini al
             
-            if (currentTheme === 'dark') {
-                // Aydınlık Temaya Geçiş
-                htmlElement.removeAttribute('data-theme');
-                localStorage.setItem('theme', 'light');
-                if (themeIcon) {
-                    themeIcon.classList.remove('fa-sun');
-                    themeIcon.classList.add('fa-moon');
-                }
-                // Aydınlık temaya geçince her iki logoyu SİYAH yap
-                if (mainLogo) mainLogo.src = 'images/logolar/mukellef-portal-logo.png'; 
-                if (footerLogo) footerLogo.src = 'images/logolar/mukellef-portal-logo.png'; 
-                
-            } else {
-                // Karanlık Temaya Geçiş
-                htmlElement.setAttribute('data-theme', 'dark');
-                localStorage.setItem('theme', 'dark');
-                if (themeIcon) {
-                    themeIcon.classList.remove('fa-moon');
-                    themeIcon.classList.add('fa-sun');
-                }
-                // Karanlık temaya geçince her iki logoyu BEYAZ yap
-                if (mainLogo) mainLogo.src = 'images/logolar/sirket-logo-beyaz.png'; 
-                if (footerLogo) footerLogo.src = 'images/logolar/sirket-logo-beyaz.png'; 
-            }
+            localStorage.setItem('theme', newTheme); // Seçimi kaydet
+            applyTheme(newTheme); // Yeni temayı ekrana bas
         });
     }
 
@@ -459,5 +453,74 @@ document.addEventListener("DOMContentLoaded", () => {
             }, 500); 
         }
     });
+
+    // ==========================================
+    // 11. & 13. 3D CAROUSEL ANİMASYONU VE CİHAZ DEĞİŞİMİ
+    // ==========================================
+    const toggleMobileBtn = document.getElementById('toggle-mobile');
+    const toggleDesktopBtn = document.getElementById('toggle-desktop');
+    const mockupCarouselBox = document.getElementById('main-mockup-carousel');
+    const carouselImgs = document.querySelectorAll('#main-mockup-carousel .carousel-img');
+
+    // --- 1. OTOMATİK DÖNME (KAYMA) ANİMASYONU ---
+    if(carouselImgs.length === 3 && mockupCarouselBox) {
+        setInterval(() => {
+            // Sadece ana kutunun içindeki resimleri seç (Çakışmayı önler)
+            const active = mockupCarouselBox.querySelector('.carousel-img.active');
+            const next = mockupCarouselBox.querySelector('.carousel-img.next');
+            const prev = mockupCarouselBox.querySelector('.carousel-img.prev');
+
+            if(active && next && prev) {
+                // Diğer sınıfları (örneğin fade-out) bozmadan sadece yön sınıflarını güvenle değiştir
+                active.classList.replace('active', 'prev');
+                next.classList.replace('next', 'active');
+                prev.classList.replace('prev', 'next');
+            }
+        }, 3500); // 3.5 saniyede bir resimler kayar
+    }
+
+    // --- 2. CİHAZ DEĞİŞTİRME BUTONLARI (Masaüstü / Mobil) ---
+    if(toggleMobileBtn && toggleDesktopBtn && mockupCarouselBox) {
+        
+        function switchDeviceMode(mode) {
+            // Masaüstüne geçildiyse kutuyu genişlet, mobildeyse daralt
+            if(mode === 'desktop') {
+                mockupCarouselBox.classList.add('desktop-mode');
+            } else {
+                mockupCarouselBox.classList.remove('desktop-mode');
+            }
+
+            carouselImgs.forEach(img => {
+                img.classList.add('fade-out'); // Resmi güvenle karart
+                
+                setTimeout(() => {
+                    const newSrc = img.getAttribute(`data-${mode}`);
+                    if(newSrc) img.src = newSrc; // Yeni resmi yükle
+                    
+                    img.classList.remove('fade-out'); // Kararmayı kaldır
+                }, 300);
+            });
+        }
+
+        // BİLGİSAYAR BUTONUNA TIKLANINCA
+        toggleDesktopBtn.addEventListener('click', () => {
+            if(!toggleDesktopBtn.classList.contains('active')) {
+                toggleMobileBtn.classList.remove('active');
+                toggleDesktopBtn.classList.add('active');
+                switchDeviceMode('desktop');
+            }
+        });
+
+        // TELEFON BUTONUNA TIKLANINCA
+        toggleMobileBtn.addEventListener('click', () => {
+            if(!toggleMobileBtn.classList.contains('active')) {
+                toggleDesktopBtn.classList.remove('active');
+                toggleMobileBtn.classList.add('active');
+                switchDeviceMode('mobile');
+            }
+        });
+    }
+
+   
 
 });
