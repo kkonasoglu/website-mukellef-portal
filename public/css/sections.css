@@ -44,6 +44,8 @@
     margin-top: 8px; 
     background: none !important; 
     padding: 0 !important; 
+    letter-spacing: 2.5px;
+    word-spacing: 5px;
 }
 
 .hero-content p {
