@@ -504,12 +504,13 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 30px;
+    gap: 20px; /* Yan yana sığmaları için kartlar arası boşluğu 30px'den 20px'e düşürdük */
 }
 
 .team-card {
-    width: calc(33.333% - 20px);
-    max-width: 380px;
+    /* 5 kişi olduğu için genişliği %20'ye göre ayarlıyoruz (tek sıra yapacak) */
+    width: calc(20% - 16px); 
+    max-width: 250px;
     background: var(--bg-white);
     border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);
@@ -547,18 +548,35 @@
 }
 
 .placeholder-icon {
-    font-size: 4rem;
+    font-size: 3rem; /* Kart küçüldüğü için boş avatar ikonunu da biraz küçülttük */
     color: var(--text-gray);
     opacity: 0.3;
 }
 
+/* Kart küçüldüğü için içindeki yazıları ve boşlukları da orantılı olarak daraltıyoruz */
 .team-info {
-    padding: 25px 20px;
+    padding: 20px 15px; 
     position: relative;
 }
 
 .member-details {
     transition: transform 0.4s ease;
+}
+
+.team-card:hover .member-details {
+    transform: translateY(-12px);
+}
+
+.member-details h4 {
+    font-size: 1.05rem; /* İsim boyutunu 1.25rem'den 1.05'e çektik ki sığsın */
+    color: var(--text-dark);
+    margin-bottom: 5px;
+}
+
+.member-details p {
+    color: var(--accent-color);
+    font-size: 0.85rem; /* Unvan boyutunu biraz daha minimal yaptık */
+    font-weight: 500;
 }
 
 .team-card:hover .member-details {
