@@ -1043,8 +1043,8 @@
 }
 
 .mockup-carousel.desktop-mode {
-    max-width: 850px; /* 520'den 680'e çıkardık, artık çok daha okunabilir olacak */
-    height: 500px; /* Yatay ekran için oranı dengeledik */
+    max-width: 700px; /* 520'den 680'e çıkardık, artık çok daha okunabilir olacak */
+    height: 420px; /* Yatay ekran için oranı dengeledik */
 }
 
 /* Cihaz değişirken animasyonun bozulmaması için güvenli kararma sınıfı */
