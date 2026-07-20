@@ -296,3 +296,28 @@
         padding-bottom: 120px !important;
     }
 }
+
+/* Mobil cihazlarda 3D Carousel ve Buton Düzeni */
+@media (max-width: 768px) {
+    /* 1. Carousel kutusunu küçült ve yüksekliği dengele */
+    .mockup-carousel {
+        height: 350px !important; 
+        max-width: 220px !important; 
+        margin: 0 auto 20px auto !important; /* Ortala ve alt boşluk bırak */
+    }
+
+    /* 2. Cihaz değiştirme butonlarını kutunun dışından kurtar (Static yaparak akışa ekle) */
+    .device-toggle-wrapper {
+        position: static !important;
+        transform: none !important;
+        flex-direction: row !important; /* Yan yana diz */
+        justify-content: center !important;
+        gap: 15px !important;
+        margin-top: 10px !important;
+    }
+
+    /* 3. Görsellerin mobilde biraz daha küçük görünmesi için ölçeklendirme */
+    .carousel-img {
+        max-width: 100%;
+    }
+}

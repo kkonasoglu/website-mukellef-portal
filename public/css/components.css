@@ -59,6 +59,7 @@
     flex-direction: column;
     justify-content: space-between;
     pointer-events: none;
+    
 }
 
 .testimonial-stars {

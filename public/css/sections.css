@@ -979,10 +979,9 @@
     width: 100%;
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-lg);
-    border: 4px solid var(--bg-white);
+    
     /* Animasyonun pürüzsüz ve tatlı bir ivmeyle kaymasını sağlar */
     transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1); 
-    background-color: var(--bg-light);
 }
 
 /* 1. EN ÖNDEKİ RESİM (Tam net ve odakta) */
@@ -1008,10 +1007,7 @@
     filter: blur(2px);
 }
 
-/* Karanlık Tema Ayarı: Çerçeveler tema rengine uyum sağlasın */
-[data-theme="dark"] .carousel-img {
-    border-color: #374151; /* --border-color değerine denk gelir */
-}
+
 
 
 /* =========================================
